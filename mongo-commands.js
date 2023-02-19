@@ -85,3 +85,118 @@ db.books.insertMany([
 db.books.find().pretty();
 
 db.books.find({ rating: { $gt: 8 } }).pretty();
+
+//rating >= 8
+db.books.find({ rating: { $gte: 8 } }).pretty();
+
+//rating <= 8
+
+db.books.find({ rating: { $lte: 8 } }).pretty();
+
+//projection - include and exclude document fields
+
+//inclusion - 1
+db.books.find({}, { name: 1, rating: 1 }).pretty();
+//exclusion - 0
+db.books.find({}, { name: 0, rating: 0 }).pretty();
+
+//sorting
+
+//asc =  1
+db.books.find({}).sort({ id: 1 }).pretty();
+
+//desc =  -1
+
+db.books.find({}).sort({ id: -1 }).pretty();
+
+//First 2 highest rating book
+
+db.books.find({}).sort({ rating: -1 }).limit(2).pretty();
+
+//skip first 2
+
+db.books.find({}).sort({ rating: -1 }).skip(2).pretty();
+
+//exclude _id, include name, rating, sort - rating asc
+
+db.books.find({}, { _id: 0, name: 1, rating: 1 }).sort({ rating: 1 }).pretty();
+
+//include _id, exclude name, rating
+
+db.books.find({}, { _id: 1, name: 0, rating: 0 }).pretty();
+
+//exclude _id, name, rating
+
+db.books.find({}, { _id: 0, name: 0, rating: 0 }).pretty();
+
+//rating >  8 , exclude _id, include name, rating , sort- rating desc
+
+db.books
+  .find({ rating: { $gt: 8 } }, { _id: 0, name: 1, rating: 1 })
+  .sort({ rating: -1 })
+  .pretty();
+
+//exclude _id, include name, rating , sort- rating desc, limit- 2
+
+db.books
+  .find({ rating: { $gt: 8 } }, { _id: 0, name: 1, rating: 1 })
+  .sort({ rating: -1 })
+  .limit(2)
+  .pretty();
+
+//aggregation
+
+//select sum(quantity) from orders where status="urgent"
+//group by productName
+
+db.orders.insertMany([
+  { _id: 0, productName: "Steel beam", status: "new", quantity: 10 },
+  { _id: 1, productName: "Steel beam", status: "urgent", quantity: 20 },
+  { _id: 2, productName: "Steel beam", status: "urgent", quantity: 30 },
+  { _id: 3, productName: "Iron rod", status: "new", quantity: 15 },
+  { _id: 4, productName: "Iron rod", status: "urgent", quantity: 50 },
+  { _id: 5, productName: "Iron rod", status: "urgent", quantity: 10 },
+]);
+
+db.orders.find({}).pretty();
+
+//stage 1
+db.orders.aggregate([{ $match: { status: "urgent" } }]);
+
+//stage 2
+// $match, $group, $sum  - aggregate operators
+
+db.orders.aggregate([
+  { $match: { status: "urgent" } },
+  {
+    $group: { _id: "$productName", totalUrgentQuantity: { $sum: "$quantity" } },
+  },
+]);
+
+// { "_id" : "Iron rod", "totalUrgentQuantity" : 60 }
+// { "_id" : "Steel beam", "totalUrgentQuantity" : 50 }
+
+//include language to book for all documents
+
+db.books.updateMany({}, { $set: { language: "English" } });
+
+//update the language as tamil for the Harry Potter
+
+db.books.updateOne({ name: "Harry potter" }, { $set: { language: "Tamil" } });
+
+//update rating to 10 for The Secret
+db.books.updateOne({ name: "The Secret" }, { $set: { rating: 10 } });
+
+//update (Charlotte's web  Charlotte's) to ( Charlotte's web)
+db.books.updateOne(
+  { name: "Charlotte's web  Charlotte's" },
+  { $set: { name: "Charlotte's web" } }
+);
+
+//Delete all books with rating <= 8
+
+db.books.deleteMany({ rating: { $lte: 9 } });
+
+//find a document - name - Charlotte's web
+
+db.books.findOne({ name: "Charlotte's web" });

@@ -12,7 +12,7 @@ const books = [
     name: "Charlotte's web  Charlotte's ",
     poster:
       "https://cdn.britannica.com/64/103064-050-295C6879/Charlottes-Web-EB-Garth-Williams.jpg",
-    rating: 8.8,
+    rating: 8,
     trailer: "https://www.youtube.com/embed/PU2r9tDwZ1M",
     summary:
       "The novel tells the story of a livestock pig named Wilbur and his friendship with a barn spider named Charlotte. When Wilbur is in danger of being slaughtered by the farmer, Charlotte writes messages praising Wilbur in her web in order to persuade the farmer to let him live.",
@@ -33,7 +33,7 @@ const books = [
     id: "003",
     name: "The Secret",
     poster: "https://m.media-amazon.com/images/I/81fdQIY6ykL.jpg",
-    rating: 8.8,
+    rating: 8,
     trailer: "https://www.youtube.com/embed/san61qTwWsU",
     summary:
       "There's no secret to The Secret. The book and movie simply state that your thoughts control the universe. Through this “law of attraction” you “manifest” your desires. “It is exactly like placing an order from a catalogue",
@@ -97,11 +97,24 @@ app.get("/", (req, res) => {
   res.send("Hello Everyone🥳🥳🥳🥳");
 });
 
+//Task - 15 mins - 2:35
+//     /books - all the books ✅
+//     /books?language=English -  only english books ✅
+//     /books?language=English&rating=8 - filter by language & rating  ✅
+//     /books?rating=8  ✅
+
 //get all books
 app.get("/books", (req, res) => {
-  const { language } = req.query; //search query after ?
+  const { language, rating } = req.query; //search query after ?
   console.log(req.query, language);
-  res.send(books.filter((bk) => bk.language === language));
+  let filteredBooks = books;
+  if (language) {
+    filteredBooks = filteredBooks.filter((bk) => bk.language === language);
+  }
+  if (rating) {
+    filteredBooks = filteredBooks.filter((bk) => bk.rating === +rating);
+  }
+  res.send(filteredBooks);
 });
 
 //get books by ID
@@ -114,5 +127,3 @@ app.get("/books/:id", (req, res) => {
 });
 
 app.listen(PORT, () => console.log("Server started on PORT ", PORT));
-
-

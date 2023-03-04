@@ -6,7 +6,7 @@ const fs = require("fs");
 //   console.log("Completed writing awesome.html");
 // });
 
-// const quote2 = "Live more, worry less🥳🥳";
+const quote2 = "Live more, worry less🥳🥳";
 
 //Task 1
 //Create the below files with quote2 as the content
@@ -18,8 +18,8 @@ const fs = require("fs");
 // text-10.html
 
 // for (let i = 1; i <= 10; i++) {
-//   fs.writeFile(`./backup/text-${i}.html`, quote2, (err) => {
-//     console.log(`Completed writing text-${i}.html`);
+//   fs.writeFile(`./backup/note-${i}.html`, quote2, (err) => {
+//     console.log(`Completed writing note-${i}.html`);
 //   });
 // }
 
@@ -49,6 +49,44 @@ const niceQuote = "\nMake everyday a little less ordinarily🥳";
 //   console.log("Completed writing nice.txt");
 // });
 
-fs.appendFile("./nice.txt", niceQuote, (err) => {
-  console.log("Completed writing nice.txt");
+// fs.appendFile("./nice.txt", niceQuote, (err) => {
+//   console.log("Completed writing nice.txt");
+// });
+
+// fs.unlink("./toRemove.txt", (err) => {
+//   console.log("Deleted Successfully");
+// });
+
+//readdir
+
+// fs.readdir("./backup", (err, files) => {
+//   console.log("All file names are", files);
+// });
+
+//Delete all files in backup folder
+
+// fs.readdir("./backup", (err, data) => {
+//   //console.log(data);
+//   data.forEach((filename) => {
+//     fs.unlink(`./backup/${filename}`, (err) => {
+//       console.log("Deleted Successfully");
+//     });
+//   });
+// });
+
+//writeFile -> callStack -> webApi(whoever finishes writing first) => CallBack Q => CallStack
+// fs.writeFile, fs.readFile, fs.appendFile -> async
+// fs.writeFileSync, fs.readFileSync, fs.appendFileSync - sync
+
+// console.log(process.argv);
+// const [, , noOfFiles] = process.argv;
+// console.log(process.argv);
+// for (let i = 1; i <= noOfFiles; i++) {
+//   fs.writeFileSync(`./backup/text-${i}.html`, niceQuote);
+//   console.log("Completed writing!!!!", i);
+// }
+
+const filenames = fs.readdirSync("./backup");
+filenames.forEach((file) => {
+  console.log(file);
 });

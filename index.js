@@ -1,5 +1,4 @@
 const express = require("express");
-const { Server } = require("http");
 
 const app = express();
 const PORT = 9000;

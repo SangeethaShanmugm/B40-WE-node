@@ -2,13 +2,16 @@
 // const { MongoClient } = require("mongodb");
 import express from "express";
 import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
 
+dotenv.config();
+// console.log(process.env)
 const app = express();
-const PORT = 9000;
+const PORT = process.env.PORT;
 // req => what is the req we sent to Server
 // res => what we receive for the req we sent to server
 
-const MONGO_URL = "mongodb://localhost";
+const MONGO_URL = process.env.MONGO_URL;
 
 async function createConnection() {
   const client = new MongoClient(MONGO_URL);
@@ -133,7 +136,7 @@ app.get("/books", async (req, res) => {
     req.query.rating = +req.query.rating;
   }
   const books = await client
-    .db("b40we")
+    .db("b40-b39-we")
     .collection("books")
     .find(req.query)
     .toArray();
@@ -146,7 +149,10 @@ app.get("/books/:id", async (req, res) => {
   const { id } = req.params;
   console.log(id);
   //db.books.findOne({id: "002"})
-  const book = await client.db("b40we").collection("books").findOne({ id: id });
+  const book = await client
+    .db("b40-b39-we")
+    .collection("books")
+    .findOne({ id: id });
   book ? res.send(book) : res.status(404).send({ message: "No Book found" });
 });
 
@@ -157,7 +163,7 @@ app.delete("/books/:id", async (req, res) => {
   console.log(id);
   //db.books.deleteOne({id: "002"})
   const book = await client
-    .db("b40we")
+    .db("b40-b39-we")
     .collection("books")
     .deleteOne({ id: id });
   res.send(book);
@@ -171,7 +177,7 @@ app.post("/books", async (req, res) => {
   console.log(newBooks);
   //db.books.deleteOne({id: "002"})
   const result = await client
-    .db("b40we")
+    .db("b40-b39-we")
     .collection("books")
     .insertMany(newBooks);
   res.send(result);

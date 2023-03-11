@@ -1,0 +1,7 @@
+helper.js  - push all functions
+
+
+2 steps - route setup in node js
+----------------------------------
+create a route - /books - bookRouter
+inside router -> change app to router -> remove /books

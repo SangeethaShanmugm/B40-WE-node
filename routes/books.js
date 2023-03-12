@@ -4,6 +4,7 @@ import {
   getBookByID,
   deleteBookByID,
   addBooks,
+  updateBooksByID,
 } from "../helper.js";
 
 const router = express.Router();
@@ -44,6 +45,17 @@ router.post("/", async (req, res) => {
   console.log(newBooks);
 
   const result = await addBooks(newBooks);
+  res.send(result);
+});
+
+//update books
+
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const updateBooks = req.body;
+  console.log(updateBooks);
+  //db.books.updateOne({id: id},{$set: updateBooks } )
+  const result = await updateBooksByID(id, updateBooks);
   res.send(result);
 });
 

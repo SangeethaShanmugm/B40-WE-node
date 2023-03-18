@@ -35,10 +35,16 @@ export async function genPassword(password) {
   return hashedPassword;
 }
 
-
-export async function createUser(username, hashedPassword){
+export async function createUser(username, hashedPassword) {
   return await client
-  .db("b40-b39-we")
-  .collection("users")
-  .insertOne({ username: username , password: hashedPassword });
+    .db("b40-b39-we")
+    .collection("users")
+    .insertOne({ username: username, password: hashedPassword });
+}
+
+export async function getUserByName(username) {
+  return await client
+    .db("b40-b39-we")
+    .collection("users")
+    .findOne({ username: username });
 }

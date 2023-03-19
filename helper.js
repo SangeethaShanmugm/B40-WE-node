@@ -48,3 +48,7 @@ export async function getUserByName(username) {
     .collection("users")
     .findOne({ username: username });
 }
+
+export async function getUserList() {
+  return await client.db("b40-b39-we").collection("users").find().toArray();
+}

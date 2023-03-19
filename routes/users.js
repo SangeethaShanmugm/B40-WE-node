@@ -1,7 +1,12 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { genPassword, createUser, getUserByName } from "../helper.js";
+import {
+  genPassword,
+  createUser,
+  getUserByName,
+  getUserList,
+} from "../helper.js";
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
@@ -44,6 +49,13 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign({ id: userFromDb._id }, process.env.SECRET_KEY);
   console.log(token);
   res.send({ message: "Successfully Logged In", token: token });
+});
+
+//get all users
+
+router.get("/list", async (req, res) => {
+  const result = await getUserList();
+  res.send(result);
 });
 
 export const userRouter = router;

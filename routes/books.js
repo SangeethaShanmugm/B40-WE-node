@@ -11,7 +11,7 @@ import { auth } from "../middleware/auth.js";
 const router = express.Router();
 
 //get all books
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   const { language, rating } = req.query; //search query after ?
   console.log(req.query, language);
 
@@ -23,7 +23,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 //get books by ID
-router.get("/:id", auth, async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   console.log(id);
   const book = await getBookByID(id);
